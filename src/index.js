@@ -2,11 +2,26 @@ import http from 'http';
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
+import Agenda from 'agenda';
 import bodyParser from 'body-parser';
 import initializeDb from './db';
 import middleware from './middleware';
 import api from './api';
 import config from './config.json';
+
+
+const agenda = new Agenda({db: {address: process.env.MONGO_CONNECTION_URL || config.mongoConnectionString,  collection: 'jobsCollection'}});
+
+agenda.define('HTTP GET', job => {
+    console.log('Hello!');
+});
+
+(async () => { // IIFE to give access to async/await
+    await agenda.start();
+
+    await agenda.every('1 minute', 'HTTP GET');
+
+})();
 
 let app = express();
 app.server = http.createServer(app);
