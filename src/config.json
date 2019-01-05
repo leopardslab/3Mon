@@ -1,6 +1,8 @@
 {
-	"port": 8080,
-	"bodyLimit": "100kb",
-	"corsHeaders": ["Link"],
-	"mongoConnectionString": ""
+  "port": 8080,
+  "bodyLimit": "100kb",
+  "corsHeaders": [
+    "Link"
+  ],
+  "mongoConnectionString": ""
 }
