@@ -1,0 +1,13 @@
+{
+  "presets": ["es2015", "stage-0"],
+  "plugins": [
+    "@babel/plugin-transform-runtime",
+    ["@babel/plugin-proposal-pipeline-operator", { "proposal": "minimal" }],
+    ["@babel/plugin-proposal-decorators",
+      {
+        "proposal":  "smart",
+        "decoratorsBeforeExport": true
+      }
+    ]
+  ]
+}
