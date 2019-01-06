@@ -16,10 +16,10 @@ cd 3Mon
 npm install
 
 # Start development live-reload server
-PORT=8080 npm run dev
+MONGO_CONNECTION_URL=mongodb://<user>:<password>@<hostname>:<port>/<dbname> PORT=8080 npm run dev
 
 # Start production server:
-PORT=8080 npm start
+MONGO_CONNECTION_URL=mongodb://<user>:<password>@<hostname>:<port>/<dbname> PORT=8080 npm start
 ```
 Docker Support
 ------

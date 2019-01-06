@@ -24,8 +24,6 @@ agenda.define('HTTP GET', job => {
 (async () => { // IIFE to give access to async/await
     await agenda.start();
 
-    await agenda.every('1 minute', 'HTTP GET');
-
 })();
 
 let app = express();
@@ -50,7 +48,7 @@ initializeDb(db => {
     app.use(middleware({config, db}));
 
     // api router
-    app.use('/api', api({config, db}));
+    app.use('/api', api({config, db, agenda}));
 
     app.server.listen(process.env.PORT || config.port, () => {
         console.log(`Started on port ${app.server.address().port}`);

@@ -1,7 +1,7 @@
 import resource from 'resource-router-middleware';
 import tasks from '../models/tasks';
 
-export default ({config, db}) => resource({
+export default ({config, db, agenda}) => resource({
 
     /** Property name to store preloaded entity on `request`. */
     id: 'task',
@@ -16,14 +16,15 @@ export default ({config, db}) => resource({
     },
 
     /** GET / - List all entities */
-    index({params}, res) {
+    index: async ({params}, res) => {
         res.json(tasks);
     },
 
     /** POST / - Create a new entity */
-    create({body}, res) {
+    create: async ({body}, res) => {
         body.id = tasks.length.toString(36);
         tasks.push(body);
+        await agenda.every('1 minute', 'HTTP GET');
         res.json(body);
     },
 
