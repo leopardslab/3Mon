@@ -10,19 +10,16 @@
     "prestart": "npm run -s build",
     "test": "eslint src"
   },
-  "eslintConfig": {
-    "extends": "eslint:recommended",
-    "parserOptions": {
-      "ecmaVersion": 7,
-      "sourceType": "module"
-    },
-    "env": {
-      "node": true
-    },
-    "rules": {
-      "no-console": 0,
-      "no-unused-vars": 1
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "*.{js,json,css,md}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "repository": {
     "type": "git",
@@ -41,9 +38,9 @@
     "resource-router-middleware": "^0.6.0"
   },
   "devDependencies": {
-    "@babel/node": "^7.2.2",
     "@babel/cli": "^7.0.0-beta.44",
     "@babel/core": "^7.0.0-beta.3",
+    "@babel/node": "^7.2.2",
     "@babel/plugin-proposal-decorators": "^7.2.3",
     "@babel/plugin-proposal-pipeline-operator": "^7.2.0",
     "@babel/plugin-transform-runtime": "^7.0.0-beta.55",
@@ -51,7 +48,11 @@
     "babel-preset-es2015": "^7.0.0-beta.3",
     "babel-preset-stage-0": "^7.0.0-beta.3",
     "eslint": "^3.1.1",
-    "nodemon": "^1.9.2"
+    "eslint-config-prettier": "^3.3.0",
+    "husky": "^1.3.1",
+    "lint-staged": "^8.1.0",
+    "nodemon": "^1.9.2",
+    "prettier": "^1.15.3"
   },
   "bugs": {
     "url": "https://github.com/leopardslab/3Mon/issues"
