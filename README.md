@@ -1,11 +1,14 @@
-3Mon
-==================================
+# 3Mon
 
 3rd Party service monitoring tool
 
+## Install
 
-Getting Started
----------------
+```
+npm install -g three-mon
+```
+
+## Getting Started
 
 ```sh
 # clone it
@@ -21,8 +24,9 @@ MONGO_CONNECTION_URL=mongodb://<user>:<password>@<hostname>:<port>/<dbname> PORT
 # Start production server:
 MONGO_CONNECTION_URL=mongodb://<user>:<password>@<hostname>:<port>/<dbname> PORT=8080 npm start
 ```
-Docker Support
-------
+
+## Docker Support
+
 ```sh
 cd express-es6-rest-api
 
@@ -36,11 +40,14 @@ docker run -p 8080:8080 leopardslab/3Mon
 #                 ^            ^
 #          bind the port    container tag
 #          to your host
-#          machine port   
+#          machine port
 
 ```
 
-License
--------
+## Misc
+
+- [OpenMetrics](https://openmetrics.io/) - Open standard for metrics
+
+## License
 
 MIT
