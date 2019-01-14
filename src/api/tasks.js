@@ -1,5 +1,6 @@
 import resource from "resource-router-middleware";
 import tasks from "../models/tasks";
+import apiMessages from "./api-messages";
 
 export default ({ config, db, models, agenda }) =>
   resource({
@@ -12,7 +13,9 @@ export default ({ config, db, models, agenda }) =>
     load(req, id, callback) {
       const taskModel = models.taskModel;
       taskModel.find(
-        { _id: id },
+        {
+          _id: id
+        },
         ["name", "type", "data", "priority"],
         (err, tsk) => {
           if (err) callback(err, null);
@@ -36,7 +39,7 @@ export default ({ config, db, models, agenda }) =>
     },
 
     /** POST / - Create a new entity */
-    create: async ({ body }, res) => {
+    create: async ({ body }, res, next) => {
       let interval = body.interval;
       const requestType = body.requestType;
       const serviceUrl = body.serviceUrl;
@@ -44,14 +47,13 @@ export default ({ config, db, models, agenda }) =>
       const httpType = body.httpType;
 
       body.id = tasks.length.toString(36);
-      // tasks.push(body);
 
       if (interval == undefined || interval == null) {
-        // default period | should change this to be configurable
-        interval = "5 minute";
+        return res
+          .json({ error: apiMessages.errorMessages.intervalError })
+          .status(200);
       }
-      // if(startMonit)
-      console.log(httpType);
+
       await agenda.every(interval, requestType, { serviceUrl, httpType });
 
       res.json(body);
