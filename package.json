@@ -30,14 +30,14 @@
   "dependencies": {
     "@babel/runtime": "^7.2.0",
     "agenda": "^2.0.2",
+    "axios": "^0.18.0",
     "body-parser": "^1.13.3",
     "compression": "^1.5.2",
     "cors": "^2.7.1",
     "express": "^4.13.3",
     "mongoose": "^5.4.3",
     "morgan": "^1.8.0",
-    "resource-router-middleware": "^0.6.0",
-    "superagent": "^4.1.0"
+    "resource-router-middleware": "^0.6.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.44",
