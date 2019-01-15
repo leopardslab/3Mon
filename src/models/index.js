@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 import taskModel from "./tasks";
-import pingModel from "./http";
+import httpModel from "./http";
 
 export default {
   taskModel: taskModel(mongoose),
-  pingModel: pingModel(mongoose)
+  httpModel: httpModel(mongoose)
 };

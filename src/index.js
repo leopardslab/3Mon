@@ -12,8 +12,6 @@ import models from "./models";
 import { initializeJobs } from "./jobs/index";
 import config from "./config.json";
 
-console.log(initializeJobs);
-
 let agenda = initializeJobs(Agenda, axios, models.pingModel);
 
 let app = express();
