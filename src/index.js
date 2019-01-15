@@ -4,14 +4,17 @@ import cors from "cors";
 import morgan from "morgan";
 import bodyParser from "body-parser";
 import Agenda from "agenda";
+import axios from "axios";
 import initializeDb from "./db";
 import middleware from "./middleware";
 import api from "./api";
 import models from "./models";
-import initializeJobs from "./jobs/index";
+import { initializeJobs } from "./jobs/index";
 import config from "./config.json";
 
-let agenda = initializeJobs(Agenda, models.pingModel);
+console.log(initializeJobs);
+
+let agenda = initializeJobs(Agenda, axios, models.pingModel);
 
 let app = express();
 app.server = http.createServer(app);

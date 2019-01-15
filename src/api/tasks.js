@@ -1,7 +1,10 @@
 import resource from "resource-router-middleware";
 import tasks from "../models/tasks";
 import apiMessages from "./api-messages";
+import { defineNewJob } from "../jobs/index";
+import axios from "axios";
 
+// refactoring needed will move all logic to separate files
 export default ({ config, db, models, agenda }) =>
   resource({
     /** Property name to store preloaded entity on `request`. */
@@ -41,7 +44,7 @@ export default ({ config, db, models, agenda }) =>
     /** POST / - Create a new entity */
     create: async ({ body }, res, next) => {
       let interval = body.interval;
-      const requestType = body.requestType;
+      const taskName = body.taskName;
       const serviceUrl = body.serviceUrl;
       const startMonit = body.startMonit;
       const httpType = body.httpType;
@@ -54,7 +57,23 @@ export default ({ config, db, models, agenda }) =>
           .status(200);
       }
 
-      await agenda.every(interval, requestType, { serviceUrl, httpType });
+      const httpModel = models.httpModel;
+
+      try {
+        await agenda.every(interval, taskName, { serviceUrl, httpType });
+        let job = {
+          attrs: {
+            name: taskName
+          }
+        };
+        // define jobs dynamically for newly created ones
+        defineNewJob(agenda, axios, job, httpModel);
+      } catch (err) {
+        console.log(err);
+        return res
+          .json({ error: apiMessages.errorMessages.taskSaveError })
+          .status(200);
+      }
 
       res.json(body);
     },

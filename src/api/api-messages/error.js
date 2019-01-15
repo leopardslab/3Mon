@@ -1,3 +1,4 @@
 export default {
-  intervalError: "Interval must be provided"
+  intervalError: "Interval must be provided",
+  taskSaveError: "Error when saving task"
 };
