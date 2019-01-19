@@ -1,4 +1,29 @@
 const httpJobs = (agenda, axios, jobs, httpModel) => {
+  axios.interceptors.request.use(
+    function(config) {
+      config.metadata = { startTime: new Date() };
+      return config;
+    },
+    function(error) {
+      return Promise.reject(error);
+    }
+  );
+
+  axios.interceptors.response.use(
+    function(response) {
+      response.config.metadata.endTime = new Date();
+      response.duration =
+        response.config.metadata.endTime - response.config.metadata.startTime;
+      return response;
+    },
+    function(error) {
+      error.config.metadata.endTime = new Date();
+      error.duration =
+        error.config.metadata.endTime - error.config.metadata.startTime;
+      return Promise.reject(error);
+    }
+  );
+
   jobs.map(job => {
     agenda.define(job.attrs.name, (job, done) => {
       const httpType = job.attrs.data.httpType.toUpperCase();
@@ -12,10 +37,15 @@ const httpJobs = (agenda, axios, jobs, httpModel) => {
               const headers = response.headers;
               const body = response.data;
               const statusCode = response.status;
+              const startTime = response.config.metadata.startTime.getTime();
+              const endTime = response.config.metadata.startTime.getTime();
+              const responseTime = endTime - startTime;
+
               const newHttpResponse = new httpModel({
                 headers,
                 body,
-                statusCode
+                statusCode,
+                responseTime
               });
               newHttpResponse.save();
               done();

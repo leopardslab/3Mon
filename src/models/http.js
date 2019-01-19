@@ -2,7 +2,8 @@ function HttpModel(mongoose) {
   const Http = mongoose.model("Http", {
     headers: {},
     body: String,
-    statusCode: Number
+    statusCode: Number,
+    responseTime: Number
   });
 
   return Http;

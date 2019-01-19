@@ -12,7 +12,7 @@ import models from "./models";
 import { initializeJobs } from "./jobs/index";
 import config from "./config.json";
 
-let agenda = initializeJobs(Agenda, axios, models.pingModel);
+let agenda = initializeJobs(Agenda, axios, models.httpModel);
 
 let app = express();
 app.server = http.createServer(app);
