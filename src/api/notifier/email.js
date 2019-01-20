@@ -1,18 +1,22 @@
 // change to DI
 import nodemailer from "nodemailer";
-import config from "../../config.json";
+
+const host = process.env.EMAIL_HOST;
+const user = process.env.EMAIL_USER;
+const pass = process.env.EMAIL_PASS;
+const from = process.env.EMAIL_FROM;
 
 const transporter = nodemailer.createTransport({
-  host: "gmail.com",
+  host: host,
   port: 2525,
   auth: {
-    user: "yourUser",
-    pass: "yourPass"
+    user,
+    pass
   }
 });
 
 export default params => {
-  this.from = "yourEmail";
+  this.from = from;
 
   this.send = function() {
     var options = {
