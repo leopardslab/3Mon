@@ -1,7 +1,7 @@
 import { httpJobs, defineNewJob } from "./http";
 
 // initialize Agenda, jobs and events
-function initializeJobs(Agenda, axios, httpModel, notifier) {
+function initializeJobs(Agenda, axios, httpModel, configModel, notifier) {
   let agenda = new Agenda({
     db: {
       address: process.env.MONGO_CONNECTION_URL || config.mongoConnectionString,
@@ -16,7 +16,7 @@ function initializeJobs(Agenda, axios, httpModel, notifier) {
 
   agenda.on("ready", async () => {
     const jobs = await agenda.jobs({});
-    httpJobs(agenda, axios, jobs, httpModel, notifier);
+    httpJobs(agenda, axios, jobs, httpModel, configModel, notifier);
   });
 
   function failGracefully() {

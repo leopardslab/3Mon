@@ -13,7 +13,13 @@ import { initializeJobs } from "./jobs/index";
 import notifier from "./api/notifier";
 import config from "./config.json";
 
-let agenda = initializeJobs(Agenda, axios, models.httpModel, notifier);
+let agenda = initializeJobs(
+  Agenda,
+  axios,
+  models.httpModel,
+  models.configModel,
+  notifier
+);
 
 let app = express();
 app.server = http.createServer(app);

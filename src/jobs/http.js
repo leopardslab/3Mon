@@ -1,4 +1,4 @@
-function defineNewJob(agenda, axios, job, httpModel, notifier) {
+function defineNewJob(agenda, axios, job, httpModel, configModel, notifier) {
   // axios interceptors to take request and reponse time
   axios.interceptors.request.use(
     function(config) {
@@ -31,7 +31,16 @@ function defineNewJob(agenda, axios, job, httpModel, notifier) {
     const httpType = job.attrs.data.httpType.toUpperCase();
     const serviceUrl = job.attrs.data.serviceUrl;
     const type = notifier.notifierTypes;
-    const thresMonNotifier = notifier.createNotifier(type.EMAIL);
+    const request = {
+      serviceUrl,
+      httpType
+    };
+
+    const thresMonNotifier = notifier.createNotifier(
+      type.EMAIL,
+      request,
+      configModel
+    );
 
     switch (httpType) {
       case "GET":
@@ -103,9 +112,9 @@ function defineNewJob(agenda, axios, job, httpModel, notifier) {
   });
 }
 
-const httpJobs = (agenda, axios, jobs, httpModel, notifier) => {
+const httpJobs = (agenda, axios, jobs, httpModel, configModel, notifier) => {
   jobs.map(job => {
-    defineNewJob(agenda, axios, job, httpModel, notifier);
+    defineNewJob(agenda, axios, job, httpModel, configModel, notifier);
   });
 };
 
