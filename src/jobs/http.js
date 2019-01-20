@@ -1,7 +1,10 @@
-const httpJobs = (agenda, axios, jobs, httpModel) => {
+function defineNewJob(agenda, axios, job, httpModel, notifier) {
+  // axios interceptors to take request and reponse time
   axios.interceptors.request.use(
     function(config) {
-      config.metadata = { startTime: new Date() };
+      config.metadata = {
+        startTime: new Date()
+      };
       return config;
     },
     function(error) {
@@ -24,57 +27,86 @@ const httpJobs = (agenda, axios, jobs, httpModel) => {
     }
   );
 
-  jobs.map(job => {
-    agenda.define(job.attrs.name, (job, done) => {
-      const httpType = job.attrs.data.httpType.toUpperCase();
+  agenda.define(job.attrs.name, (job, done) => {
+    const httpType = job.attrs.data.httpType.toUpperCase();
+    const serviceUrl = job.attrs.data.serviceUrl;
+    const type = notifier.notifierTypes;
+    const thresMonNotifier = notifier.createNotifier(type.EMAIL);
 
-      const serviceUrl = job.attrs.data.serviceUrl;
+    switch (httpType) {
+      case "GET":
+        axios({ method: httpType, url: serviceUrl })
+          .then(response => {
+            const headers = response.headers;
+            const body = response.data;
+            const statusCode = response.status;
+            const startTime = response.config.metadata.startTime.getTime();
+            const endTime = response.config.metadata.startTime.getTime();
+            const responseTime = endTime - startTime;
 
-      switch (httpType) {
-        case "GET":
-          axios({ method: httpType, url: serviceUrl })
-            .then(response => {
-              const headers = response.headers;
-              const body = response.data;
-              const statusCode = response.status;
-              const startTime = response.config.metadata.startTime.getTime();
-              const endTime = response.config.metadata.startTime.getTime();
-              const responseTime = endTime - startTime;
-
-              const newHttpResponse = new httpModel({
-                headers,
-                body,
-                statusCode,
-                responseTime
-              });
-              newHttpResponse.save();
-              done();
-            })
-            .catch(err => {
-              // add to logger eg: winston
-              console.log(err);
-              done();
+            let newHttpResponse = new httpModel({
+              headers,
+              body,
+              statusCode,
+              responseTime
             });
-          break;
-        case "POST":
-          console.log("POST");
-          break;
-        case "DELETE":
-          console.log("DELETE");
-          break;
-        case "PATCH":
-          console.log("PATCH");
-          break;
-        case "PUT":
-          console.log("PUT");
-          break;
-        default:
-          done();
-      }
-      // const newPing = new httpModel({statusCode: 200, body: 'SAMPLE'});
-      // newPing.save().then(() => { console.log('Done'); });
-    });
+            newHttpResponse.save();
+            done();
+          })
+          .catch(err => {
+            // add to logger eg: winston
+            thresMonNotifier.setFailure({ serviceUrl, httpType });
+            console.log(err);
+            done();
+          });
+        break;
+      case "POST":
+        const httpBody = jobs.attrs.data.httpBody;
+
+        axios({ method: httpType, url: serviceUrl, data: httpBody })
+          .then(response => {
+            const headers = response.headers;
+            const body = response.data;
+            const statusCode = response.status;
+            const startTime = response.config.metadata.startTime.getTime();
+            const endTime = response.config.metadata.startTime.getTime();
+            const responseTime = endTime - startTime;
+
+            let newHttpResponse = new httpModel({
+              headers,
+              body,
+              statusCode,
+              responseTime
+            });
+            newHttpResponse.save();
+            done();
+          })
+          .catch(err => {
+            // add to logger eg: winston
+            thresMonNotifier.setFailure({ serviceUrl, httpType });
+            console.log(err);
+            done();
+          });
+        break;
+      case "DELETE":
+        console.log("DELETE");
+        break;
+      case "PATCH":
+        console.log("PATCH");
+        break;
+      case "PUT":
+        console.log("PUT");
+        break;
+      default:
+        done();
+    }
+  });
+}
+
+const httpJobs = (agenda, axios, jobs, httpModel, notifier) => {
+  jobs.map(job => {
+    defineNewJob(agenda, axios, job, httpModel, notifier);
   });
 };
 
-export default httpJobs;
+export { httpJobs, defineNewJob };
