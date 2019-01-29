@@ -5,7 +5,7 @@ import { defineNewJob } from "../jobs/index";
 import axios from "axios";
 
 // refactoring needed will move all logic to separate files
-export default ({ config, db, models, agenda }) =>
+export default ({ config, db, models, agenda, notifier }) =>
   resource({
     /** Property name to store preloaded entity on `request`. */
     id: "tasks",
@@ -67,7 +67,7 @@ export default ({ config, db, models, agenda }) =>
           }
         };
         // define jobs dynamically for newly created ones
-        defineNewJob(agenda, axios, job, httpModel);
+        defineNewJob(agenda, axios, job, httpModel, notifier);
       } catch (err) {
         console.log(err);
         return res

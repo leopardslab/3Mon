@@ -10,9 +10,16 @@ import middleware from "./middleware";
 import api from "./api";
 import models from "./models";
 import { initializeJobs } from "./jobs/index";
+import notifier from "./api/notifier";
 import config from "./config.json";
 
-let agenda = initializeJobs(Agenda, axios, models.pingModel);
+let agenda = initializeJobs(
+  Agenda,
+  axios,
+  models.httpModel,
+  models.configModel,
+  notifier
+);
 
 let app = express();
 app.server = http.createServer(app);
@@ -39,7 +46,7 @@ initializeDb(db => {
   app.use(middleware({ config, db }));
 
   // api router
-  app.use("/api", api({ config, db, models, agenda }));
+  app.use("/api", api({ config, db, models, agenda, notifier }));
 
   app.server.listen(process.env.PORT || config.port, () => {
     console.log(`Started on port ${app.server.address().port}`);
