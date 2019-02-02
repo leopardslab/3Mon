@@ -1,7 +1,7 @@
 import tasks from "../../models/tasks";
 import apiMessages from "../api-messages";
 
-const loadTask = () => {
+const loadTask = (taskModel, callback) => {
   taskModel.find(
     {
       _id: id
