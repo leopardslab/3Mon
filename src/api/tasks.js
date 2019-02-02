@@ -2,6 +2,7 @@ import resource from "resource-router-middleware";
 import tasks from "../models/tasks";
 import apiMessages from "./api-messages";
 import { defineNewJob } from "../jobs/index";
+import { loadTasks, loadTask, createTask } from "./controllers/tasks.js";
 import axios from "axios";
 
 // refactoring needed will move all logic to separate files
@@ -15,30 +16,14 @@ export default ({ config, db, models, agenda, notifier }) =>
      */
     load(req, id, callback) {
       const taskModel = models.taskModel;
-      taskModel.find(
-        {
-          _id: id
-        },
-        ["name", "type", "data", "priority"],
-        (err, tsk) => {
-          if (err) callback(err, null);
-
-          callback(err, tsk);
-        }
-      );
+      loadTask(taskModel, callback);
     },
 
     /** GET / - List all entities */
     index: async ({ params }, res) => {
       const taskModel = models.taskModel;
-
-      taskModel.find(
-        {},
-        ["name", "type", "data", "priority"],
-        (err, allTasks) => {
-          res.json(allTasks).status(200);
-        }
-      );
+      const allTasks = await loadTasks(taskModel);
+      res.json(allTasks).status(200);
     },
 
     /** POST / - Create a new entity */
@@ -48,6 +33,7 @@ export default ({ config, db, models, agenda, notifier }) =>
       const serviceUrl = body.serviceUrl;
       const startMonit = body.startMonit;
       const httpType = body.httpType;
+      const httpModel = models.httpModel;
 
       body.id = tasks.length.toString(36);
 
@@ -57,23 +43,15 @@ export default ({ config, db, models, agenda, notifier }) =>
           .status(200);
       }
 
-      const httpModel = models.httpModel;
-
-      try {
-        await agenda.every(interval, taskName, { serviceUrl, httpType });
-        let job = {
-          attrs: {
-            name: taskName
-          }
-        };
-        // define jobs dynamically for newly created ones
-        defineNewJob(agenda, axios, job, httpModel, notifier);
-      } catch (err) {
-        console.log(err);
-        return res
-          .json({ error: apiMessages.errorMessages.taskSaveError })
-          .status(200);
-      }
+      createTask({
+        interval,
+        taskName,
+        serviceUrl,
+        httpType,
+        agenda,
+        httpModel,
+        notifier
+      });
 
       res.json(body);
     },
