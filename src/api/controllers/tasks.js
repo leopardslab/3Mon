@@ -49,7 +49,7 @@ const createTask = async ({
     // define jobs dynamically for newly created ones
     defineNewJob(agenda, axios, job, httpModel, notifier);
   } catch (err) {
-    return false;
+    return err;
   }
 };
 

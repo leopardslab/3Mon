@@ -17,7 +17,7 @@ export default ({ config, db, models, agenda, notifier }) =>
 
       try {
         const tsk = await loadTask(taskModel, callback);
-        callback(err, tsk);
+        callback(null, tsk);
       } catch (ex) {
         callback(ex, null);
       }
