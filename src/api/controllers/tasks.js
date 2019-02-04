@@ -2,17 +2,19 @@ import tasks from "../../models/tasks";
 import apiMessages from "../api-messages";
 
 const loadTask = (taskModel, callback) => {
-  taskModel.find(
-    {
-      _id: id
-    },
-    ["name", "type", "data", "priority"],
-    (err, tsk) => {
-      if (err) callback(err, null);
+  return new Promise((resolve, reject) => {
+    taskModel.find(
+      {
+        _id: id
+      },
+      ["name", "type", "data", "priority"],
+      (err, tsk) => {
+        if (err) reject(err); //callback(err, null);
 
-      callback(err, tsk);
-    }
-  );
+        resolve(tsk); //callback(err, tsk);
+      }
+    );
+  });
 };
 
 const loadTasks = (taskModel, callback) => {
@@ -20,7 +22,10 @@ const loadTasks = (taskModel, callback) => {
     taskModel.find(
       {},
       ["name", "type", "data", "priority"],
-      (err, allTasks) => {}
+      (err, allTasks) => {
+        if (err) reject(err);
+        resolve(allTasks);
+      }
     );
   });
 };
@@ -48,4 +53,4 @@ const createTask = async ({
   }
 };
 
-export default { loadTask, loadTasks, createTask };
+export { loadTask, loadTasks, createTask };
