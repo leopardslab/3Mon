@@ -1,0 +1,65 @@
+{
+  "name": "3mon",
+  "version": "0.0.1",
+  "description": "Third party service monitoring tool",
+  "main": "dist",
+  "scripts": {
+    "dev": "nodemon -w src --exec \"babel-node src\"",
+    "build": "babel src -s -D -d dist",
+    "start": "node dist",
+    "prestart": "npm run -s build",
+    "test": "eslint src"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,json,css,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leopardslab/3Mon.git"
+  },
+  "author": "LeopardsLab",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/runtime": "^7.2.0",
+    "agenda": "^2.0.2",
+    "axios": "^0.18.0",
+    "bluebird": "^3.5.3",
+    "body-parser": "^1.13.3",
+    "compression": "^1.5.2",
+    "cors": "^2.7.1",
+    "express": "^4.13.3",
+    "mongoose": "^5.4.3",
+    "morgan": "^1.8.0",
+    "nodemailer": "^5.1.1",
+    "resource-router-middleware": "^0.6.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0-beta.44",
+    "@babel/core": "^7.0.0-beta.3",
+    "@babel/node": "^7.2.2",
+    "@babel/plugin-proposal-decorators": "^7.2.3",
+    "@babel/plugin-proposal-pipeline-operator": "^7.2.0",
+    "@babel/plugin-transform-runtime": "^7.0.0-beta.55",
+    "@babel/preset-env": "^7.0.0-beta.3",
+    "babel-preset-es2015": "^7.0.0-beta.3",
+    "babel-preset-stage-0": "^7.0.0-beta.3",
+    "eslint": "^3.1.1",
+    "eslint-config-prettier": "^3.3.0",
+    "husky": "^1.3.1",
+    "lint-staged": "^8.1.0",
+    "nodemon": "^1.9.2",
+    "prettier": "^1.15.3"
+  },
+  "bugs": {
+    "url": "https://github.com/leopardslab/3Mon/issues"
+  },
+  "homepage": "https://github.com/leopardslab/3Mon#readme"
+}

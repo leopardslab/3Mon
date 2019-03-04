@@ -50,6 +50,8 @@ function getConfig(configModel) {
     if (config[0].failureThreshold == undefined)
       throw new Error(errorMessages.failureThreshold);
 
+    console.log("Here");
+    console.log(config[0].failureThreshold);
     failureThreshold = config.failureThreshold;
   });
 }
