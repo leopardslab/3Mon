@@ -42,6 +42,8 @@ docker run -p 8080:8080 leopardslab/3Mon
 #          to your host
 #          machine port
 
+# run mongo
+docker run -p 27017:27017 --name raven-mongo mongo
 ```
 
 ## Misc
