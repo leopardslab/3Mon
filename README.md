@@ -50,4 +50,4 @@ docker run -p 8080:8080 leopardslab/3Mon
 
 ## License
 
-MIT
+MIT © [leopardslab](https://github.com/leopardslab)
