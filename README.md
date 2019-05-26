@@ -1,21 +1,21 @@
-# 3Mon
+# raven
 
-3rd Party service monitoring tool
+3rd party service monitoring tool
 
-<img src="https://github.com/leopardslab/3Mon/blob/master/docs/Raven%20-%20leopardslab.png" />
+<img align="center" src="https://github.com/leopardslab/3Mon/blob/master/docs/Raven%20-%20leopardslab.png" />
 
 ## Install
 
 ```
-npm install -g three-mon
+npm install -g raven-monit
 ```
 
 ## Getting Started
 
 ```sh
 # clone it
-git clone git@github.com:leopardslab/3Mon.git
-cd 3Mon
+git clone git@github.com:leopardslab/raven.git
+cd raven
 
 # Install dependencies
 npm install
