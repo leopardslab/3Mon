@@ -18,7 +18,7 @@ COPY . .
 EXPOSE 8080
 #choose one  of the following.
 # Start development live-reload server
-CMD npm run dev
+CMD MONGO_CONNECTION_URL=mongodb://:<password>@<hostname>:<port>/<dbname> PORT=8080 npm run dev
 
 # Start production server:
-CMD npm start
+#CMD MONGO_CONNECTION_URL=mongodb://:<password>@<hostname>:<port>/<dbname> PORT=8080 npm start
