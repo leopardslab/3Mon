@@ -17,7 +17,7 @@ npm install -g raven-monit
 git clone git@github.com:leopardslab/raven.git
 cd raven
 
-# Install dependencies
+# Install dependencies inside server and client seperately
 npm install
 
 # Start development live-reload server
@@ -29,9 +29,19 @@ MONGO_CONNECTION_URL=mongodb://<user>:<password>@<hostname>:<port>/<dbname> PORT
 
 ## Docker Support
 
+
 ```sh
 cd express-es6-rest-api
 
+#Edit the  dockerfile 
+
+#for live server
+CMD MONGO_CONNECTION_URL=mongodb://:<password>@<hostname>:<port>/<dbname> PORT=8080 npm run dev
+
+#for production server
+CMD MONGO_CONNECTION_URL=mongodb://:<password>@<hostname>:<port>/<dbname> PORT=8080 npm start
+
+#There is no configuration added for mongodb inside dockerfile . So it should run manualy.
 # Build your docker
 docker build -t leopardslab/3Mon .
 #            ^      ^         ^
