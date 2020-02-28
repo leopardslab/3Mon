@@ -1,4 +1,5 @@
 import { httpJobs, defineNewJob } from "./http";
+import config from "../config.json";
 
 // initialize Agenda, jobs and events
 function initializeJobs(Agenda, axios, httpModel, configModel, notifier) {
