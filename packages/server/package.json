@@ -36,7 +36,7 @@
     "compression": "^1.5.2",
     "cors": "^2.7.1",
     "express": "^4.13.3",
-    "mongoose": "^5.4.3",
+    "mongoose": "^5.7.5",
     "morgan": "^1.8.0",
     "nodemailer": "^5.1.1",
     "resource-router-middleware": "^0.6.0"
